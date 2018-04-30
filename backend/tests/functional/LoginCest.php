@@ -8,8 +8,8 @@ use common\fixtures\UserFixture;
 /**
  * Class LoginCest
  */
-class LoginCest
-{
+class LoginCest {
+
     /**
      * Load fixtures before db transaction begin
      * Called in _before()
@@ -17,8 +17,7 @@ class LoginCest
      * @see \Codeception\Module\Yii2::loadFixtures()
      * @return array
      */
-    public function _fixtures()
-    {
+    public function _fixtures() {
         return [
             'user' => [
                 'class' => UserFixture::className(),
@@ -26,12 +25,11 @@ class LoginCest
             ]
         ];
     }
-    
+
     /**
      * @param FunctionalTester $I
      */
-    public function loginUser(FunctionalTester $I)
-    {
+    public function loginUser(FunctionalTester $I) {
         $I->amOnPage('/site/login');
         $I->fillField('Username', 'erau');
         $I->fillField('Password', 'password_0');
@@ -41,4 +39,5 @@ class LoginCest
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
     }
+
 }

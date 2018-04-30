@@ -1,8 +1,13 @@
+<head>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+
 <?php
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use kartik\spinner\Spinner;
+use common\models\Instances;
 
 $this->title = 'Instances';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,31 +21,80 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
 ?>
 <script>
     function doInstance(action) {
-        var keys = jQuery('#instance-list').yiiGridView('getSelectedRows');
-        var datas = {ids:keys,_csrf: yii.getCsrfToken()};
-        switch(action){
-            case 'on':
-                $('#spinner').show();
-                $.post( "turn-on", datas)
-                    .done(function( data ) {
-                        $('#spinner').hide();;
+    //after Format some code will go to this "= >", change it back to "=>" then the code can run properly.
+    var keys = jQuery('#instance-list').yiiGridView('getSelectedRows');
+    var datas = {ids:keys, _csrf: yii.getCsrfToken()};
+    switch (action){
+    case 'on':
+            swal({
+            title: "Are you sure want to START the selected instance?",
+                    text: "Selected No: " + keys,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+            })
+            .then((confirm) => {
+            if (confirm == true)
+            {
+            $('#spinner').show();
+            $.post("turn-on", datas)
+                    .done(function(data)
+                    {
+                    $('#spinner').hide(); ;
                     });
-                break;
-            case 'off':
-                $('#spinner').show();
-                $.post( "turn-off", datas)
-                    .done(function( data ) {
-                        $('#spinner').hide();;
+            swal("Success!", {
+            icon: "success",
+            });
+            }
+            });
+    break;
+    case 'off':
+            swal({
+            title: "Are you sure want to STOP the selected instance?",
+                    text: "Selected NO: " + keys,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+            })
+            .then((confirm) => {
+            if (confirm == true)
+            {
+            $('#spinner').show();
+            $.post("turn-off", datas)
+                    .done(function(data)
+                    {
+                    $('#spinner').hide(); ;
                     });
-                break;
-            case 'reboot':
-                $('#spinner').show();
-                $.post( "reboot", datas)
-                    .done(function( data ) {
-                        $('#spinner').hide();;
+            swal("Success!", {
+            icon: "success",
+            });
+            }
+            });
+    break;
+    case 'reboot':
+            swal({
+            title: "Are you sure want to Reboot the selected instance?",
+                    text: "Selected NO: " + keys,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+            })
+            .then((confirm) => {
+            if (confirm == true)
+            {
+            $('#spinner').show();
+            $.post("reboot", datas)
+                    .done(function(data)
+                    {
+                    $('#spinner').hide(); ;
                     });
-                break;
-        }
+            swal("Success!", {
+            icon: "success",
+            });
+            }
+            });
+    break;
+    }
     }
 </script>
 <style>
@@ -61,16 +115,18 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
                 <?php echo Spinner::widget(['preset' => 'tiny', 'align' => 'left', 'caption' => 'Loading &hellip;']); ?>
             </span>
             <span id="sync-btn-name">
-                <i class="ace-icon fa fa-refresh"></i><?php echo 'Trigger Instance Update'; ?>
+                <i class="ace-icon fa fa-refresh"></i><?php echo 'Update Instance State'; ?>
             </span>
         </a>
     </div>
 </div>
 <div class="row">
     <div id="spinner">
-        <?= Spinner::widget([
+        <?=
+        Spinner::widget([
             'preset' => Spinner::LARGE,
-        ])?>
+        ])
+        ?>
     </div>
     <div class="clearfix"></div>
     <div class="col-xs-12">
@@ -88,11 +144,11 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
 //            'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
             'headerRowOptions' => ['class' => 'kartik-sheet-style'],
             'filterRowOptions' => ['class' => 'kartik-sheet-style'],
-            'toolbar' =>  [
+            'toolbar' => [
                 ['content' =>
-                    Html::button('On', ['type' => 'button', 'title' => 'Turn On Instance', 'class' => 'btn btn-success', 'onclick' => 'js:doInstance("on");']) . '' .
-                    Html::button('Off', ['type' => 'button', 'title' => 'Turn Off Instance', 'class' => 'btn btn-danger', 'onclick' => 'js:doInstance("off");']) . '' .
-                    Html::button('Restart', ['type' => 'button', 'title' => 'Reboot Instance', 'class' => 'btn btn-warning', 'onclick' => 'js:doInstance("reboot");'])],
+                    Html::button('Start', ['type' => 'button', 'title' => 'Turn On Instance', 'class' => 'btn btn-success', 'onclick' => 'js:doInstance("on");']) . '' .
+                    Html::button('Stop', ['type' => 'button', 'title' => 'Turn Off Instance', 'class' => 'btn btn-danger', 'onclick' => 'js:doInstance("off");']) . '' .
+                    Html::button('Reboot', ['type' => 'button', 'title' => 'Reboot Instance', 'class' => 'btn btn-warning', 'onclick' => 'js:doInstance("reboot");'])],
                 '{toggleData}',
             ],
             'panel' => [
@@ -109,13 +165,13 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
                     'class' => 'yii\grid\DataColumn',
                     'attribute' => 'tags',
                     'value' => function ($model) {
-                        $name='';
-                        if(!empty($model['tags'])) {
-                            $tags = json_decode($model['tags'],1);
+                        $name = '';
+                        if (!empty($model['tags'])) {
+                            $tags = json_decode($model['tags'], 1);
                         }
-                        if(isset($tags)) {
-                            foreach($tags as $key => $val) {
-                                if($val['Key'] == 'Name') {
+                        if (isset($tags)) {
+                            foreach ($tags as $key => $val) {
+                                if ($val['Key'] == 'Name') {
                                     $name = $val['Value'];
                                 }
                             }
@@ -130,55 +186,55 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
                 [
                     'class' => 'kartik\grid\EditableColumn',
                     'attribute' => 'description',
-                    'editableOptions' =>  function ($model, $key, $index) {
+                    'editableOptions' => function ($model, $key, $index) {
                         return [
                             'header' => 'description',
                             'inputType' => \kartik\editable\Editable::INPUT_TEXT,
                             'size' => 'md',
                         ];
                     }
-                ],
-                [
-                    'class' => 'yii\grid\DataColumn',
-                    'attribute' => 'private_ip_address',
-                ],
-                [
-                    'class' => 'yii\grid\DataColumn',
-                    'attribute' => 'public_ip_address',
-                ],
-                [
-                    'class' => 'kartik\grid\EditableColumn',
-                    'attribute' => 'remark',
-                    'editableOptions' =>  function ($model, $key, $index) {
-                        return [
-                            'header' => 'remark',
-                            'size' => 'md',
-                        ];
-                    }
-                ],
-                [
-                    'class' => 'kartik\grid\DataColumn',
-                    'attribute' => 'state_name',
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => $statusFilter,
-                    'format' => 'raw',
-                    'value' => function ($model) {
-                        if ($model['state_name'] == 'running') {
-                            return Html::tag('span', 'Running', ['class' => 'label label-success arrowed']);
-                        } else if ($model['state_name'] == 'stopped') {
-                            return Html::tag('span', 'Stopped', ['class' => 'label label-danger arrowed-in']);
-                        } else if ($model['state_name'] == 'pending') {
-                            return Html::tag('span', 'Pending', ['class' => 'label label-primary arrowed-in']);
-                        } else if ($model['state_name'] == 'stopping') {
-                            return Html::tag('span', 'Stopping', ['class' => 'label label-warning arrowed-in']);
-                        } else if ($model['state_name'] == 'shutting-down') {
-                            return Html::tag('span', 'Shutting Down', ['class' => 'label label-warning arrowed-in']);
-                        } else if ($model['state_name'] == 'terminated') {
-                            return Html::tag('span', 'Terminated', ['class' => 'label label-warning arrowed-in']);
-                        }
-                        return $model['state_name'];
-                    },
-                ],
+                        ],
+                        [
+                            'class' => 'yii\grid\DataColumn',
+                            'attribute' => 'private_ip_address',
+                        ],
+                        [
+                            'class' => 'yii\grid\DataColumn',
+                            'attribute' => 'public_ip_address',
+                        ],
+                        [
+                            'class' => 'kartik\grid\EditableColumn',
+                            'attribute' => 'remark',
+                            'editableOptions' => function ($model, $key, $index) {
+                                return [
+                                    'header' => 'remark',
+                                    'size' => 'md',
+                                ];
+                            }
+                                ],
+                                [
+                                    'class' => 'kartik\grid\DataColumn',
+                                    'attribute' => 'state_name',
+                                    'filterType' => GridView::FILTER_SELECT2,
+                                    'filter' => $statusFilter,
+                                    'format' => 'raw',
+                                    'value' => function ($model) {
+                                        if ($model['state_name'] == 'running') {
+                                            return Html::tag('span', 'Running', ['class' => 'label label-success arrowed']);
+                                        } else if ($model['state_name'] == 'stopped') {
+                                            return Html::tag('span', 'Stopped', ['class' => 'label label-danger arrowed-in']);
+                                        } else if ($model['state_name'] == 'pending') {
+                                            return Html::tag('span', 'Pending', ['class' => 'label label-primary arrowed-in']);
+                                        } else if ($model['state_name'] == 'stopping') {
+                                            return Html::tag('span', 'Stopping', ['class' => 'label label-warning arrowed-in']);
+                                        } else if ($model['state_name'] == 'shutting-down') {
+                                            return Html::tag('span', 'Shutting Down', ['class' => 'label label-warning arrowed-in']);
+                                        } else if ($model['state_name'] == 'terminated') {
+                                            return Html::tag('span', 'Terminated', ['class' => 'label label-warning arrowed-in']);
+                                        }
+                                        return $model['state_name'];
+                                    },
+                                        ],
 //                [
 //                    'class' => 'kartik\grid\ExpandRowColumn',
 //                    'expandTitle' => 'Network Interfaces',
@@ -205,22 +261,22 @@ $this->registerJs($script, \yii\web\VIEW::POS_END);
 //                    'headerOptions' => ['class' => 'kartik-sheet-style'],
 //                    'expandOneOnly' => true
 //                ],
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template' => '{view}',
-                    'buttons' => [
-                        'view' => function ($url, $model) {
-                            $url = \Yii::$app->urlManager->createUrl(['/instance/view', 'id' => $model['id']]);
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, ['title' => 'View', 'data-pjax' => '0']);
-                        },
-                    ],
-                ],
-                [
-                    'class' => 'kartik\grid\CheckboxColumn',
-                    'headerOptions' => ['class' => 'kartik-sheet-style'],
-                ],
-            ],
-        ]);
-        ?>
+                                        [
+                                            'class' => 'yii\grid\ActionColumn',
+                                            'template' => '{view}',
+                                            'buttons' => [
+                                                'view' => function ($url, $model) {
+                                                    $url = \Yii::$app->urlManager->createUrl(['/instance/view', 'id' => $model['id']]);
+                                                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, ['title' => 'View', 'data-pjax' => '0']);
+                                                },
+                                                    ],
+                                                ],
+                                                [
+                                                    'class' => 'kartik\grid\CheckboxColumn',
+                                                    'headerOptions' => ['class' => 'kartik-sheet-style'],
+                                                ],
+                                            ],
+                                        ]);
+                                        ?>
     </div>
 </div>

@@ -1,11 +1,12 @@
 <?php
+
 return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=aws_ec2',
+            'dsn' => 'mysql:host=localhost;port=8080;dbname=aws_ec2',
             'username' => 'root',
-            'password' => 'root',
+            'password' => '1234567890',
             'charset' => 'utf8',
         ],
         'mailer' => [

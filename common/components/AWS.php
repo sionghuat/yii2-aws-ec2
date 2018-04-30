@@ -3,15 +3,13 @@
 namespace common\components;
 
 use common\components\AWSEc2;
-
 use Aws\Sdk;
-
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
 class AWS extends Component {
-    
+
     /**
      * @var
      */
@@ -19,12 +17,9 @@ class AWS extends Component {
     public $secret;
     public $region;
     public $version;
-    
     public $ec2;
-
     private $_config;
     private $_sdk = null;
-    
     private $instances = [];
 
     /**
@@ -47,6 +42,9 @@ class AWS extends Component {
                 'key' => $this->key,
                 'secret' => $this->secret,
             ],
+            'https' => [
+                'verify' => 'C:\xampp\htdocs\yii2_aws_ec2\yii2-aws-ec2\common\config\cacert.pem'
+            ]
         ];
     }
 
@@ -59,7 +57,7 @@ class AWS extends Component {
         }
         return $this->_sdk;
     }
-    
+
     /**
      * @return \common\components\AWSEc2
      */

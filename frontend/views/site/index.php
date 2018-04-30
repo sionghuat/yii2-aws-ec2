@@ -1,53 +1,38 @@
 <?php
-
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
 ?>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    /*body {font-family: "Times New Roman", Georgia, Serif; text-align: center}*/
+
+</style>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+    <div class="jumbotron" style="background:gainsboro; width:40%; text-align:center; margin:20px auto;">
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <h3 class="w3-center">User Logged In : </h3>
+        <p class="lead" style="color:red"> 
+            <?php
+            if (isset($user)) {
+                echo $user->username;
+            }
+            if (empty($user)) {
+                echo'';
+            }
+            ?>
+        </p>
     </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+    <div class="jumbotron" style="background:gainsboro; width:40%; text-align:center; margin:0 auto; ">
+        <h3 class="w3-center">Status Instance : </h3><br>
+        <div class="alert alert-success" style="text-align:center">
+            <strong class="lead" >Running : <?php echo $running; ?></strong>
         </div>
-
+        <div class="alert alert-danger" style="text-align:center">
+            <strong class="lead" >Stopped : <?php echo $stopped; ?></strong>
+        </div>
     </div>
+
 </div>

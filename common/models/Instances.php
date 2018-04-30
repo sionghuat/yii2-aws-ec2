@@ -42,8 +42,8 @@ use yii\data\ActiveDataProvider;
  * @property int $created_at
  * @property int $updated_at
  */
-class Instances extends \yii\db\ActiveRecord
-{
+class Instances extends \yii\db\ActiveRecord {
+
     public function behaviors() {
         return [
             [
@@ -55,19 +55,18 @@ class Instances extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'instances';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['ami_launch_index', 'created_at', 'updated_at'], 'integer'],
             [['network_interfaces', 'security_groups', 'tags', 'description', 'remark'], 'string'],
@@ -81,8 +80,7 @@ class Instances extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'ami_launch_index' => 'Ami Launch Index',
@@ -141,4 +139,5 @@ class Instances extends \yii\db\ActiveRecord
 
         return $dataProvider;
     }
+
 }

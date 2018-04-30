@@ -19,7 +19,6 @@ class AWSEc2 {
      */
     private $_instance;
 
-
     public function __construct(\common\components\AWS $aws = null, $config = false) {
         if (!isset($aws)) {
             $aws = Yii::$app->aws;
@@ -65,17 +64,16 @@ class AWSEc2 {
         if (!$this->_instance) {
             return false;
         }
-        $params = (!empty($instanceIds)) ? ['InstanceIds'=>$instanceIds] : [];
+        $params = (!empty($instanceIds)) ? ['InstanceIds' => $instanceIds] : [];
         $returns = $this->_instance->DescribeInstances($params);
-        foreach($returns as $reserves) {
-            foreach($reserves as $index => $reserve) {
+        foreach ($returns as $reserves) {
+            foreach ($reserves as $index => $reserve) {
                 $reserveIndex = $index;
-                if(isset($reserve['Instances'])) {
-                    foreach($reserve['Instances'] as $instances) {
+                if (isset($reserve['Instances'])) {
+                    foreach ($reserve['Instances'] as $instances) {
                         $instance[$reserveIndex][] = $instances;
                     }
                 }
-
             }
         }
         return $instance;
@@ -88,7 +86,7 @@ class AWSEc2 {
         if (!$this->_instance) {
             return false;
         }
-        $returns = $this->_instance->StartInstances(['InstanceIds'=>$instanceIds]);
+        $returns = $this->_instance->StartInstances(['InstanceIds' => $instanceIds]);
 
         return $returns;
     }
@@ -100,7 +98,7 @@ class AWSEc2 {
         if (!$this->_instance) {
             return false;
         }
-        $returns = $this->_instance->StopInstances(['InstanceIds'=>$instanceIds]);
+        $returns = $this->_instance->StopInstances(['InstanceIds' => $instanceIds]);
 
         return $returns;
     }
@@ -112,7 +110,7 @@ class AWSEc2 {
         if (!$this->_instance) {
             return false;
         }
-        $returns = $this->_instance->RebootInstances(['InstanceIds'=>$instanceIds]);
+        $returns = $this->_instance->RebootInstances(['InstanceIds' => $instanceIds]);
 
         return $returns;
     }
