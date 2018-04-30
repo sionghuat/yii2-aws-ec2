@@ -23,7 +23,18 @@
         "kartik-v/yii2-widget-select2": "^2.1",
         "kartik-v/yii2-editable": "^1.7",
         "kartik-v/yii2-widget-spinner": "^1.0",
-        "kartik-v/yii2-detail-view": "^1.7"
+        "kartik-v/yii2-detail-view": "^1.7",
+        "zelenin/yii2-rbac-module": "dev-master",
+        "kartik-v/yii2-field-range": "*",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-datetimepicker": "*",
+        "kartik-v/yii2-widget-timepicker": "*",
+        "pheme/yii2-jui-timepicker": "*",
+        "janisto/yii2-timepicker": "*",
+        "kartik-v/yii2-dialog": "*",
+        "yii2mod/yii2-sweet-alert": "*",
+        "aryelds/yii2-sweet-alert": "@dev"
+
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
